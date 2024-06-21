@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>حاسبة Okey</title>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style>
+      body {
+        background-color: rgb(0, 36, 70);
+      }
+
+      .mainPage {
+        width: 30%;
+        height: 100vh;
+        background-color: rgb(255, 255, 255);
+        /* display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; */
+        border: 1px solid black;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px black;
+        transition: 0.5s;
+      }
+      input.numberInput {
+        width: 70px;
+        height: 25px;
+      }
+      .forNshrhBox{
+          background: rgb(239, 239, 239);
+           height: 55%; 
+           margin: 8%; 
+           overflow-y: scroll;
+           border-radius: 10px;
+        }
+      @media screen and (max-width:436px) {
+        .mainPage {
+          width: 100%;
+        }
+        body{
+          margin: 0;
+          padding: 0;
+        }
+        .forNshrhBox{
+          height: 50%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div dir="rtl">
+      <div style="display: flex; justify-content: center; align-items: center">
+        <div class="mainPage">
+          <div
+            style="
+              background-color: rgb(52, 150, 155);
+              width: 100%;
+              height: 55px;
+              border-radius: 10px;
+              box-shadow: 0px 3px 15px rgba(142, 141, 141, 0.55);
+            "
+          ></div>
+          <div
+            style="
+              display: flex;
+              justify-content: space-around;
+              align-content: center;
+              align-items: center;
+            "
+          >
+            <h2>لنا</h2>
+            <span> </span>
+            <h2>لهم</h2>
+          </div>
+          <div style="display: flex; justify-content: space-between ; margin-right: 45px; margin-left: 45px; margin-top: 2px;">
+            <input id="numOflna" class="numberInput" type="number" min="0" required />
+            <span id="arrow" onclick="" class="material-symbols-outlined">
+              arrow_forward
+              </span>
+            <input id="numOflhm" class="numberInput" type="number" min="0" required/>
+          </div>
+          <div style="display: flex; justify-content: space-between ; margin-right: 45px; margin-left: 45px;margin-top: 2px">
+            <div>
+                <button id="btnP1" style="width: 35px; height: 25px;" >+</button>
+                <button id="btnS1" style="width: 35px; height: 25px; margin-right: 3px;">-</button>
+            </div>
+            <div>
+                <button id="btnS2" style="width: 35px; height: 25px;" >-</button>
+                <button id="btnP2" style="width: 35px; height: 25px; margin-right: 3px;">+</button>
+            </div>
+          </div>
+          <div style="display: flex; justify-content:center; margin-top: 20px;">
+            <button id="btnEnter" style="width: 70px ; height: 25px;">Enter</button>
+            <button id="btnEnter" onclick="newPlay()" style="width: 70px ; height: 25px;">new</button>
+          </div>
+          <div style="display: flex; justify-content:center; margin-top: 25px;" >
+
+            <label for="playsWay">نظام اللعب :</label>
+            <select name="playsWay" id="plays">
+              <option value="loops">لفات</option>
+              <option value="count">عدد</option>
+            </select>
+            <input id="count" style="width: 40px;" type="number">
+          </div>
+          <div id="list"class="forNshrhBox">
+                <div  style="display: flex; justify-content: space-around; ">
+                    <h3 id="forLna">20+</h3>
+                    <h3 id="forLhm">20-</h3>
+                </div>
+                <!-- <div style="display: flex; justify-content: space-around;">
+                    <span id="space">---</span>
+                </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+
+    let nshrh = [
+        {
+            lna: 20,
+            lhm: 10
+        }
+    ]
+
+
+    function getItemsFromStore(){
+        let retrievedItems = JSON.parse(localStorage.getItem('nshrh'))
+        nshrh = retrievedItems ?? [];
+        // if there are no tasks available to retrieve from the store then return empty list 
+
+    }
+
+    getItemsFromStore()
+        
+    let numOflna = document.getElementById('numOflna');
+    let numOflhm = document.getElementById('numOflhm');
+    let btnP1 = document.getElementById('btnP1');
+    let btnS1 = document.getElementById('btnS1');
+    let btnP2 = document.getElementById('btnP2');
+    let btnS2 = document.getElementById('btnS2');
+    let plays = document.getElementById('plays');
+    let count = document.getElementById('count');
+
+
+
+
+    // document.getElementById('forLhm').innerHTML = ""
+    // document.getElementById('forLna').innerHTML = ""
+    // document.getElementById('space').innerHTML = ""
+
+    function toPlus(number){
+        if(number == 0) return number
+        return +number;
+    }
+
+    function toSalb(number){
+        if(number == 0) return number
+        return -number;
+    }
+
+    let resultForLna = "0"
+    let resultForLhm = "0"
+    btnP1.addEventListener('click', function(){
+        resultForLna =toPlus(numOflna.value)
+        // document.getElementById('forLna').innerHTML = resultForLna
+
+    })
+    btnP2.addEventListener('click', function(){
+        resultForLhm = toPlus(numOflhm.value)
+        
+
+    })
+    btnS1.addEventListener('click', function(){
+        resultForLna = toSalb(numOflna.value)
+        // document.getElementById('forLna').innerHTML = resultForLna
+    })
+    btnS2.addEventListener('click', function(){
+        resultForLhm = toSalb(numOflhm.value)
+        
+    })
+    document.getElementById('btnEnter').addEventListener('click', function(){
+        // resultForLhm = "0"; resultForLna = "0";
+        if (numOflhm.value == "" || numOflna.value == "" || resultForLhm == "" || resultForLna == ""){
+            // alert(' الرجاء ادخال العدد او تحديد اذا العدد موجب او سالب')
+            swal("خطأ", ' الرجاء ادخال العدد او تحديد اذا العدد موجب او سالب', "error");
+            return
+            // console.log(numOflhm.value, numOflna.value , resultForLhm , resultForLna )
+        }
+        else {
+            numOflhm.value = ""
+            numOflna.value = ""
+            console.log(resultForLhm , resultForLna)
+            if (resultForLhm == "0")resultForLhm = 0
+            if(resultForLna == "0") resultForLna = 0
+            nshrh.push({
+                lna: resultForLna,
+                lhm: resultForLhm
+            })
+            storeState()
+            showNshrh()
+            sums()
+            resultForLhm = "0"
+            resultForLna = "0"
+        }
+
+    })
+
+
+
+    function showNshrh(){
+        document.getElementById('list').innerHTML = " "
+        let index = 0 
+        for (nshr of nshrh){
+            let nshra = ` 
+                <div style="display: flex; justify-content: space-around;">
+                    <span>-- ${index + 1} --</span>
+                </div>
+                <div  style="display: flex; justify-content: space-around; ">
+                    <h3>${nshr.lna}</h3>
+                    <h3>${nshr.lhm}</h3>
+                </div>`;
+                
+
+            document.getElementById('list').innerHTML += nshra;
+            index++
+        }
+    }
+
+    showNshrh()
+
+    function sums(){
+        var reslnas = 0
+        var reslhms = 0
+        for (nshrh1 of nshrh){
+            reslnas += nshrh1.lna
+            reslhms += nshrh1.lhm
+        }
+        let nshra = ` 
+                <div  style="display: flex; justify-content: space-around; ">
+                    <h2>${reslnas}</h2>
+                    <h2>${reslhms}</h2>
+                </div>`
+                
+        document.getElementById('list').innerHTML += nshra;
+
+ 
+
+    }
+    function storeState(){
+            
+            let nshrhString = JSON.stringify(nshrh)
+            localStorage.setItem('nshrh',nshrhString)
+    }
+    function newPlay(){
+      swal({
+          title: "هل انت متأكد من بدأ لعبة جديدة؟",
+          text: "!سيتم حذف كافة النشرة للعبة الحالية",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            swal("تم حذف النشرة الحالية , وتم بدأ نشرة جديدة", {
+              icon: "success",
+            })
+            nshrh = []
+            storeState()
+            showNshrh()
+            //  sums()
+            resultForLhm = "0"
+            resultForLna = "0";
+          } else {
+            swal("لم يتم حذف النشرة أكمل لعبك");
+          }
+        });
+
+    }
+
+    let span = document.getElementById("arrow")
+    span.addEventListener('click',()=>{
+      let index1 = 1
+      if(index1 == 0)span.style.rotate += '90deg'
+      if(index1 == 1)span.style.rotate += '180deg'
+      if(index1 == 2)span.style.rotate += '270deg'
+      if(index1 == 3)span.style.rotate += '360deg'
+      
+
+    })
+    function arrowPlayerd(){
+      let indx = 0
+
+      
+
+    }
+
+  </script>
+</html>
