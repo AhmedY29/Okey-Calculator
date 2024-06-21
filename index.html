@@ -35,6 +35,14 @@
            overflow-y: scroll;
            border-radius: 10px;
         }
+      .btns{
+        width: 55px;
+        height: 30px;
+        background-color: rgb(52, 150, 155);
+        color: white;
+        border: none;
+        box-shadow: 0px 3px 15px rgba(142, 141, 141, 0.55)
+      }
       @media screen and (max-width:436px) {
         .mainPage {
           width: 100%;
@@ -83,17 +91,17 @@
           </div>
           <div style="display: flex; justify-content: space-between ; margin-right: 45px; margin-left: 45px;margin-top: 2px">
             <div>
-                <button id="btnP1" style="width: 35px; height: 25px;" >+</button>
-                <button id="btnS1" style="width: 35px; height: 25px; margin-right: 3px;">-</button>
+                <button id="btnP1" class="btns" style="width: 35px; height: 25px;" >+</button>
+                <button id="btnS1" class="btns" style="width: 35px; height: 25px; margin-right: 3px;">-</button>
             </div>
             <div>
-                <button id="btnS2" style="width: 35px; height: 25px;" >-</button>
-                <button id="btnP2" style="width: 35px; height: 25px; margin-right: 3px;">+</button>
+                <button id="btnS2" class="btns" style="width: 35px; height: 25px;" >-</button>
+                <button id="btnP2" class="btns" style="width: 35px; height: 25px; margin-right: 3px;">+</button>
             </div>
           </div>
           <div style="display: flex; justify-content:center; margin-top: 20px;">
-            <button id="btnEnter" style="width: 70px ; height: 25px;">Enter</button>
-            <button id="btnEnter" onclick="newPlay()" style="width: 70px ; height: 25px;">new</button>
+            <button id="btnEnter" class="btns" style="width: 70px ; height: 25px; margin-left: 2px;">سجل</button>
+            <button id="btnEnter" class="btns" onclick="newPlay()" style="width: 70px ; height: 25px;">لعبة جديدة</button>
           </div>
           <div style="display: flex; justify-content:center; margin-top: 25px;" >
 
@@ -102,7 +110,7 @@
               <option value="loops">لفات</option>
               <option value="count">عدد</option>
             </select>
-            <input id="count" style="width: 40px;" type="number">
+            <input id="countPlayStyle" style="width: 40px;" type="number">
           </div>
           <div id="list"class="forNshrhBox">
                 <div  style="display: flex; justify-content: space-around; ">
@@ -203,6 +211,7 @@
             storeState()
             showNshrh()
             sums()
+            playStyle()
             resultForLhm = "0"
             resultForLna = "0"
         }
@@ -210,10 +219,10 @@
     })
 
 
-
+    var countOflops
     function showNshrh(){
-        document.getElementById('list').innerHTML = " "
-        let index = 0 
+      document.getElementById('list').innerHTML = " "
+      let index = 0 
         for (nshr of nshrh){
             let nshra = ` 
                 <div style="display: flex; justify-content: space-around;">
@@ -227,14 +236,15 @@
 
             document.getElementById('list').innerHTML += nshra;
             index++
+            countOflops = index
         }
     }
 
     showNshrh()
-
+    
+    var reslnas = 0
+    var reslhms = 0
     function sums(){
-        var reslnas = 0
-        var reslhms = 0
         for (nshrh1 of nshrh){
             reslnas += nshrh1.lna
             reslhms += nshrh1.lhm
@@ -291,11 +301,39 @@
       
 
     })
-    function arrowPlayerd(){
-      let indx = 0
 
-      
-
+    function playStyle(){
+      let plays = document.getElementById('plays').value
+      let countPlayStyle = document.getElementById('countPlayStyle')
+      console.log(plays)
+      console.log(countPlayStyle)
+      console.log(countOflops)
+      if(plays == "loops"){
+        if(countOflops == countPlayStyle.value)
+        swal({
+          title: "أنتهت اللعبة ",
+          text: "؟هل تريد بدأ لعبة جديدة",
+          // icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            swal("تم حذف النشرة الحالية , وتم بدأ نشرة جديدة", {
+              icon: "success",
+            })
+            countPlayStyle.value = '';
+            nshrh = []
+            storeState()
+            showNshrh()
+            //  sums()
+            resultForLhm = "0"
+            resultForLna = "0";
+          } else {
+            swal("لم يتم حذف النشرة أكمل لعبك");
+          }
+        });
+      }
     }
 
   </script>
