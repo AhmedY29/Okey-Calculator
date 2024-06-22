@@ -36,12 +36,13 @@
            border-radius: 10px;
         }
       .btns{
-        width: 55px;
+        width: 35px;
         height: 30px;
         background-color: rgb(52, 150, 155);
         color: white;
         border: none;
-        box-shadow: 0px 3px 15px rgba(142, 141, 141, 0.55)
+        box-shadow: 0px 3px 15px rgba(142, 141, 141, 0.55);
+        transition: 0.2s;
       }
       @media screen and (max-width:436px) {
         .mainPage {
@@ -53,6 +54,10 @@
         }
         .forNshrhBox{
           height: 50%;
+        }
+        .btns{
+        width: 40px;
+        height: 33px;
         }
       }
     </style>
@@ -91,17 +96,17 @@
           </div>
           <div style="display: flex; justify-content: space-between ; margin-right: 45px; margin-left: 45px;margin-top: 2px">
             <div>
-                <button id="btnP1" class="btns" style="width: 35px; height: 25px;" >+</button>
-                <button id="btnS1" class="btns" style="width: 35px; height: 25px; margin-right: 3px;">-</button>
+                <button id="btnP1" class="btns">+</button>
+                <button id="btnS1" class="btns" style="margin-right: 3px;">-</button>
             </div>
             <div>
-                <button id="btnS2" class="btns" style="width: 35px; height: 25px;" >-</button>
-                <button id="btnP2" class="btns" style="width: 35px; height: 25px; margin-right: 3px;">+</button>
+                <button id="btnS2" class="btns">-</button>
+                <button id="btnP2" class="btns" style="margin-right: 3px;">+</button>
             </div>
           </div>
           <div style="display: flex; justify-content:center; margin-top: 20px;">
-            <button id="btnEnter" class="btns" style="width: 70px ; height: 25px; margin-left: 2px;">سجل</button>
-            <button id="btnEnter" class="btns" onclick="newPlay()" style="width: 70px ; height: 25px;">لعبة جديدة</button>
+            <button id="btnEnter" class="btns" style="margin-left: 2px; width: 70px; height: 33px;">سجل</button>
+            <button id="btnEnter" class="btns" onclick="newPlay()" style=" width: 70px; height: 33px;">لعبة جديدة</button>
           </div>
           <div style="display: flex; justify-content:center; margin-top: 25px;" >
 
@@ -130,7 +135,7 @@
     let nshrh = [
         {
             lna: 20,
-            lhm: 10
+            lhm: 10,
         }
     ]
 
@@ -175,21 +180,22 @@
     btnP1.addEventListener('click', function(){
         resultForLna =toPlus(numOflna.value)
         // document.getElementById('forLna').innerHTML = resultForLna
-
-    })
+        // changeColor(this)
+      })
     btnP2.addEventListener('click', function(){
         resultForLhm = toPlus(numOflhm.value)
-        
-
+        // changeColor(this)
     })
     btnS1.addEventListener('click', function(){
         resultForLna = toSalb(numOflna.value)
         // document.getElementById('forLna').innerHTML = resultForLna
+        // changeColor(this)
     })
     btnS2.addEventListener('click', function(){
         resultForLhm = toSalb(numOflhm.value)
-        
+        // changeColor(this)
     })
+    var resultlna = 0 , resultlhm = 0
     document.getElementById('btnEnter').addEventListener('click', function(){
         // resultForLhm = "0"; resultForLna = "0";
         if (numOflhm.value == "" || numOflna.value == "" || resultForLhm == "" || resultForLna == ""){
@@ -208,6 +214,9 @@
                 lna: resultForLna,
                 lhm: resultForLhm
             })
+            // resultlna += resultForLna ;
+            // resultlhm += resultForLhm ;
+            // console.log(resultlna, resultlhm)
             storeState()
             showNshrh()
             sums()
@@ -241,18 +250,20 @@
     }
 
     showNshrh()
-    
-    var reslnas = 0
-    var reslhms = 0
     function sums(){
+      var reslnas = 0
+      var reslhms = 0
         for (nshrh1 of nshrh){
             reslnas += nshrh1.lna
             reslhms += nshrh1.lhm
         }
         let nshra = ` 
+                <div style="display: flex; justify-content: space-around;">
+                    <span>----</span>
+                </div>
                 <div  style="display: flex; justify-content: space-around; ">
-                    <h2>${reslnas}</h2>
-                    <h2>${reslhms}</h2>
+                    <h2 id="forLna">${reslnas}</h2>
+                    <h2 id="forLhm">${reslhms}</h2>
                 </div>`
                 
         document.getElementById('list').innerHTML += nshra;
@@ -301,18 +312,10 @@
       
 
     })
-
-    function playStyle(){
-      let plays = document.getElementById('plays').value
-      let countPlayStyle = document.getElementById('countPlayStyle')
-      console.log(plays)
-      console.log(countPlayStyle)
-      console.log(countOflops)
-      if(plays == "loops"){
-        if(countOflops == countPlayStyle.value)
-        swal({
+    function alertForplayStyle(){
+      swal({
           title: "أنتهت اللعبة ",
-          text: "؟هل تريد بدأ لعبة جديدة",
+          text: "هل تريد بدأ لعبة جديدة؟",
           // icon: "warning",
           buttons: true,
           dangerMode: true,
@@ -333,8 +336,29 @@
             swal("لم يتم حذف النشرة أكمل لعبك");
           }
         });
-      }
     }
+    function playStyle(){
+      let plays = document.getElementById('plays').value
+      let countPlayStyle = document.getElementById('countPlayStyle')
+      let countLhm = document.getElementById('forLhm"')
+      let countLna = document.getElementById('forlna')
+      // console.log(plays)
+      // console.log(countPlayStyle.value)
+      // console.log(countOflops)
+      // console.log(countLhm.value)
+      if(plays == "loops"){
+        if(countOflops == countPlayStyle.value)
+        alertForplayStyle()
+      }
+      // if(plays == "count"){
+      //   if(countPlayStyle.value == countLna.value || countPlayStyle.value == countLhm.value)
+      //   alertForplayStyle()
+      // }
+    }
+    // console.log(resultlhm)
 
+    // function changeColor(btn){
+    //   btn.style.backgroundColor = 'rgb(32 ,94 ,97)'
+    // }
   </script>
 </html>
